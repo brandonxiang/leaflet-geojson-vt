@@ -1,15 +1,12 @@
 # leaflet-geojson-vt
 
-A plugin combining geojson-vt with leafletjs 1.0,which is inspired by [geojson-vt-leaflet](https://github.com/handygeospatial/geojson-vt-leaflet).
+This is a plugin combining geojson-vt with leafletjs, which is inspired by [geojson-vt-leaflet](https://github.com/handygeospatial/geojson-vt-leaflet). I am the original author of leaflet-geojson-vt. [iamtekson/leaflet-geojson-vt](https://github.com/iamtekson/leaflet-geojson-vt) is a fork of this repo. Welcome to use this plugin.
 
-If you use leaflet 0.7, please switch to the master branch.
-
-- 0.7 on [master branch](https://github.com/brandonxiang/leaflet-geojson-vt/tree/master)
-- 1.0 on [leaflet1.0.0 branch](https://github.com/brandonxiang/leaflet-geojson-vt/tree/leaflet1.0.0)
+If you use leaflet 0.7, please switch to the [leaflet0.7.7](https://github.com/brandonxiang/leaflet-geojson-vt/tree/leaflet0.7.7).
 
 ## Usage
 
-```
+```javascript
 var options = {
     maxZoom: 16,
     tolerance: 3,
@@ -25,7 +22,7 @@ var canvasLayer = L.gridLayer.geoJson(json, options).addTo(map);
 
 Options are included with [geojson-vt options](https://github.com/mapbox/geojson-vt#options) and [L.geojson style](http://leafletjs.com/reference.html#path-options).
 
-```
+```javascript
 var tileIndex = geojsonvt(data, {
     maxZoom: 14,  // max zoom to preserve detail on
     tolerance: 3, // simplification tolerance (higher means simpler)
@@ -39,27 +36,32 @@ var tileIndex = geojsonvt(data, {
 });
 ```
 
-## Dependency
-
-- [geojson-vt](https://github.com/mapbox/geojson-vt)
-
 ## Demo
 
 [DEMO](https://brandonxiang.github.io/leaflet-geojson-vt/test)
 
-## Test
+## Development
 
 run npm script with `browser-sync`
 
-```
+```shell
 npm run dev
 ```
 
-Browser on `http://localhost:3000/test`
+Browser on `http://localhost:3000/example`
 
 ## TODO
 
-[TODO](doc/TODO.md)
+- point interactive
+- ~~new branch to compatiable with 1.0.0~~
+- ~~more geojson style~~
+- ~~convert to included class of `L.TileLayer.Canvas`~~
+- ~~different canvas layers~~
+- ~~style for polygon and polyline~~
+- ~~layers change~~
+- ~~seperate index.js into index.js and app.js~~
+- ~~draw point on canvas~~
+- ~~draw marker by image(cancel)~~
 
 ## Changelog
 
@@ -67,4 +69,4 @@ Browser on `http://localhost:3000/test`
 
 ## License
 
-[LICENSE](LICENSE)
+[brandonxiang@MIT](LICENSE)

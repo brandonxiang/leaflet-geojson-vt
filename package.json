@@ -1,11 +1,19 @@
 {
-  "name": "leaflet-geojson-vt",
-  "version": "0.0.1",
+  "name": "leaflet-geojson",
+  "version": "1.0.0",
   "description": "A plugin combining geojson-vt with leafletjs",
-  "main": "index.js",
+  "main": "dist/leaflet-geojson-vt.js",
+  "unpkg": "dist/leaflet-geojson-vt.min.js",
+  "module": "dist/leaflet-geojson-vt.mjs",
+  "exports": {
+    "require": "./dist/leaflet-geojson-vt.js",
+    "default": "./dist/leaflet-geojson-vt.modern.js"
+  },
+
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "browser-sync start --server --files \"**/*.html,**/*.css,**/*.js\""
+    "dev": "sirv example --port 3000 --dev",
+    "build": "npm run bundle && cp dist/leaflet-geojson-vt.min.js example",
+    "bundle": "microbundle --globals leaflet=L,geojson-vt=geojsonvt --sourcemap false"
   },
   "repository": {
     "type": "git",
@@ -22,7 +30,11 @@
   },
   "homepage": "https://github.com/brandonxiang/leaflet-geojson-vt#readme",
   "dependencies": {
-    "geojson-vt": "^2.2.0",
-    "leaflet": "^0.7.7"
+    "geojson-vt": "^3.2.0",
+    "leaflet": "^1.0.0"
+  },
+  "devDependencies": {
+    "sirv-cli": "^1.0.14",
+    "microbundle": "^0.14.2"
   }
 }

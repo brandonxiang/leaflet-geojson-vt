@@ -1,4 +1,31 @@
-L.GridLayer.GeoJSON = L.GridLayer.extend({
+import L from 'leaflet'
+import geojsonvt from 'geojson-vt';
+
+
+const iscolorHex = function (value) {
+    var sColor = value.toLowerCase();
+    var reg = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/;
+    return reg.test(sColor);
+}
+
+const colorRgb = function (value) {
+    var sColor = value.toLowerCase();
+    if (sColor.length === 4) {
+        var sColorNew = "#";
+        for (var i = 1; i < 4; i += 1) {
+            sColorNew += sColor.slice(i, i + 1).concat(sColor.slice(i, i + 1));
+        }
+        sColor = sColorNew;
+    }
+    //处理六位的颜色值
+    var sColorChange = [];
+    for (var i = 1; i < 7; i += 2) {
+        sColorChange.push(parseInt("0x" + sColor.slice(i, i + 2)));
+    }
+    return sColorChange;
+};  
+
+export const GeojsonVt = L.GridLayer.extend({
     options: {
         async: false
     },
@@ -79,9 +106,9 @@ L.GridLayer.GeoJSON = L.GridLayer.extend({
     setOpacity: function (color, opacity) {
         if (opacity) {
             var color = color || '#03f';
-            if (color.iscolorHex()) {
-                var colorRgb = color.colorRgb();
-                return "rgba(" + colorRgb[0] + "," + colorRgb[1] + "," + colorRgb[2] + "," + opacity + ")";
+            if (iscolorHex(color)) {
+                var res = colorRgb(color);
+                return "rgba(" + res[0] + "," + res[1] + "," + res[2] + "," + opacity + ")";
             } else {
                 return color;
             }
@@ -92,30 +119,13 @@ L.GridLayer.GeoJSON = L.GridLayer.extend({
     }
 })
 
-L.gridLayer.geoJson = function (geojson, options) {
-    return new L.GridLayer.GeoJSON(geojson, options);
+export const geojsonVt = function (geojson, options) {
+    return new GeojsonVt(geojson, options);
 };
 
-String.prototype.iscolorHex = function () {
-    var sColor = this.toLowerCase();
-    var reg = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/;
-    return reg.test(sColor);
+if(window.L) {
+    L.GridLayer.GeoJSON = GeojsonVt;
+    L.gridLayer.geoJson = geojsonVt;
 }
 
 
-String.prototype.colorRgb = function () {
-    var sColor = this.toLowerCase();
-    if (sColor.length === 4) {
-        var sColorNew = "#";
-        for (var i = 1; i < 4; i += 1) {
-            sColorNew += sColor.slice(i, i + 1).concat(sColor.slice(i, i + 1));
-        }
-        sColor = sColorNew;
-    }
-    //处理六位的颜色值  
-    var sColorChange = [];
-    for (var i = 1; i < 7; i += 2) {
-        sColorChange.push(parseInt("0x" + sColor.slice(i, i + 2)));
-    }
-    return sColorChange;
-};  
