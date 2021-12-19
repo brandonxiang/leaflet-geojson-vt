@@ -36,10 +36,6 @@ var tileIndex = geojsonvt(data, {
 });
 ```
 
-## Demo
-
-[DEMO](https://brandonxiang.github.io/leaflet-geojson-vt/test)
-
 ## Development
 
 run npm script with `browser-sync`

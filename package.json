@@ -9,6 +9,9 @@
     "require": "./dist/leaflet-geojson-vt.js",
     "default": "./dist/leaflet-geojson-vt.modern.js"
   },
+  "files": [
+    "dist"
+  ],
 
   "scripts": {
     "dev": "sirv example --port 3000 --dev",
