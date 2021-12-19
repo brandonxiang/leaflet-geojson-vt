@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>leaflet-geojson-vt</title>
+    <link href="//cdn.bootcss.com/leaflet/1.7.1/leaflet.css" rel="stylesheet" />
+
+    <style>
+      body {
+        padding: 0;
+        margin: 0;
+      }
+
+      html,
+      body,
+      #map {
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="map" />
+    <script src="//cdn.bootcss.com/leaflet/1.7.1/leaflet-src.js"></script>
+    <script src="//cdn.bootcss.com/leaflet-hash/0.2.1/leaflet-hash.js"></script>
+    <script src="https://unpkg.com/geojson-vt@3.2.1/geojson-vt.js"></script>
+    <script src="https://unpkg.com/nestie@1.0.2/dist/index.min.js"></script>
+    <script src="./leaflet-geojson-vt.min.js"></script>
+    <script>
+      let map;
+      let layerControl;
+
+      function initMap() {
+        const osm = L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png");
+        const geoq = L.tileLayer(
+          "//map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}"
+        );
+        map = L.map("map", {
+          center: [22.5885, 114.0537],
+          zoom: 14,
+          layers: [geoq],
+        });
+        layerControl = L.control
+          .layers(
+            {
+              osm: osm,
+              geoq: geoq,
+            },
+            {}
+          )
+          .addTo(map);
+        L.hash(map);
+      }
+
+      const get = async (url) => {
+        const res = await fetch(url);
+        return await res.json();
+      };
+
+      const drawCanvasLayer = async (url, _name, options) => {
+        const name = _name || "canvas";
+        const json = await get(url);
+        const canvasLayer = L.gridLayer.geoJson(json, options).addTo(map);
+        layerControl.addOverlay(canvasLayer, name);
+      };
+
+      function main() {
+        initMap();
+        const options = {
+          maxZoom: 16,
+          tolerance: 3,
+          debug: 0,
+          style: {
+            fillColor: "#1EB300",
+            color: "#F2FF00",
+            opacity: 0.5,
+            weight: 2,
+            fillOpacity: 0.5,
+          },
+        };
+        drawCanvasLayer(
+          "http://handygeospatial.github.io/geojsonvt-ksj-site/kanagawa_yoto.geojson",
+          "polygon",
+          options
+        );
+        drawCanvasLayer("./greenway.json", "polyline", options);
+        drawCanvasLayer("./busstop.json", "point", options);
+      }
+
+      main();
+    </script>
+  </body>
+</html>
